@@ -57,30 +57,6 @@ Add the following block of code to App.js:
 
 ```jsx
 
-  const onChangeColor = async (noteId, color) => {
-    try {
-      const response = await fetch(`http://localhost:4000/updateNoteColor/${noteId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ color }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to update note color');
-      }
-  
-      setNotes((prevNotes) =>
-        prevNotes.map((note) =>
-          note._id === noteId ? { ...note, color: color } : note
-        )
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
 
 ```
 
@@ -95,16 +71,7 @@ in the return statement of each Note component:
 
 ```jsx
 
-return (
-    <div key={entry._id}>
-        <Note
-        entry={entry} 
-        editNote={editNote} 
-        deleteNote={deleteNote}
-        onChangeColor={onChangeColor}
-        />
-    </div>
-)
+
 ```
 
 
@@ -112,21 +79,4 @@ Add the following block of code to server.js:
 
 
 ```jsx
-
-app.patch('/updateNoteColor/:noteId', express.json(), async (req, res) => {
-  const { noteId } = req.params;
-  const { color } = req.body;
-
-  if (!ObjectId.isValid(noteId)) {
-      return res.status(400).json({ error: "Invalid note ID." });
-  }
-
-  try {
-      const collection = db.collection('notes');
-      await collection.updateOne({ _id: new ObjectId(noteId) }, { $set: { color } });
-      res.json({ message: 'Note color updated successfully.' });
-  } catch (error) {
-      res.status(500).json({ error: error.message });
-  }
-});
 ```
