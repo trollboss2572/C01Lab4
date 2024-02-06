@@ -1,0 +1,2 @@
+App.js: API call was not correct 
+server.js: accessing the database notes collection was not correct
