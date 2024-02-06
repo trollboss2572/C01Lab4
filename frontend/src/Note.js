@@ -19,7 +19,6 @@ const Note = ({entry, editNote, deleteNote}) => {
     )
 
 }
-
 export default Note;
 
 const NoteStyle = {

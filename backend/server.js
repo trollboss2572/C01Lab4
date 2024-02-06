@@ -38,6 +38,23 @@ const COLLECTIONS = {
   };
 
 
+app.patch('/updateNoteColor/:noteId', express.json(), async (req, res) => {
+  const { noteId } = req.params;
+  const { color } = req.body;
+
+  if (!ObjectId.isValid(noteId)) {
+      return res.status(400).json({ error: "Invalid note ID." });
+  }
+
+  try {
+      const collection = db.collection('notes');
+      await collection.updateOne({ _id: new ObjectId(noteId) }, { $set: { color } });
+      res.json({ message: 'Note color updated successfully.' });
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
 // Get all notes available
 app.get("/getAllNotes", express.json(), async (req, res) => {
   try {
